@@ -1,0 +1,69 @@
+{% extends "base.html" %} {% block content %}
+    <form action="{{ url_for('index') }}" method="POST">
+        <div class="form-group">
+            <label for="file_name">file name</label>
+            <input type="text" class="form-control" id="file_name" placeholder="file name" name="file_name">
+
+            <label for="file_size">File size</label>
+            <input type="text" class="form-control" id="file_size" placeholder="File size" name="file_size">
+
+            <label for="file_type">File type</label>
+            <input type="text" class="form-control" id="file_type" placeholder="File type" name="file_type">
+
+            <label for="file_hash">File hash</label>
+            <input type="text" class="form-control" id="file_hash" placeholder="File hash" name="file_hash">
+
+            <label for="file_key">File key</label>
+            <input type="text" class="form-control" id="file_key" placeholder="File key" name="file_key">
+
+            <label for="type">type</label>
+            <input type="text" class="form-control" id="type" placeholder="type" name="type">
+
+            <label for="creator">Creator</label>
+            <input type="text" class="form-control" id="creator" placeholder="creator" name="creator">
+
+            <label for="signature">signature</label>
+            <input type="text" class="form-control" id="signature" placeholder="Signature" name="signature">
+
+        </div>
+
+        <div class="form-check">
+            <label class="form-check-label">
+                <input type="checkbox" class="form-check-input" name="make_proof"
+                       value="{{ request.form.get('make_proof', '') }}">
+                make proof
+            </label>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary btn-lg btn-block">Send</button>
+    </form>
+    <br>
+    <hr> {% endblock %} {% block check %}
+    <form action="{{ url_for('integrity') }}" method="POST">
+        <button type="submit" class="btn btn-primary btn-lg btn-block">Check integrity</button>
+    </form>
+    <hr>
+    <ul class="list-group">
+        {% for result in results %}
+            <li class="list-group-item"> Block {{ result['block'] }} : {% if result['result'] == 'ok' %}
+                <i>Okay!</i> {% endif %} {% if result['result'] == 'error' %}
+                <strong> corrupted!</strong> {% endif %} {% if result['proof'] != -1 %}
+                <i>mined!</i> {% endif %} {% if result['proof'] == -1 %}
+                <strong>not mined!</strong> {% endif %}
+
+            </li>
+        {% endfor %}</ul>
+    <br> {% endblock %}
+<hr> {% block mining %}
+    <form action="{{ url_for('mining') }}" method="POST">
+        <button type="submit" class="btn btn-primary btn-lg btn-block">Mining</button>
+    </form>
+    {% if querry %}
+        <hr>
+        <div class="alert alert-success" role="alert">
+            <strong>Well done!</strong> You successfully mined!
+        </div>
+        <hr><br> {% endif %}
+
+
+    <br><br><br> {% endblock %}
