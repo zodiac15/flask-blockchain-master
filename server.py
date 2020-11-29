@@ -2,9 +2,11 @@ from flask import Flask
 from flask import render_template, redirect, url_for
 from flask import request
 import blockChain
+import resources
+from flask_restful import Api
 
 app = Flask(__name__)
-
+api = Api(app)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -16,13 +18,14 @@ def index():
                 'size': request.form['file_size'],
                 'file_type': request.form['file_type'],
                 'file_hash': request.form['file_hash'],
-                'key': request.form['file_key'],
+                'salt': request.form['salt'],
+                'nonce': request.form['nonce'],
+                'tag': request.form['tag'],
             },
             'creator': request.form['creator'],
-            'signature': request.form['signature'],
             'block_type': request.form['type'],
         }
-        if len(block['data']['name']) < 1:
+        if len(block['data']['file_hash']) < 1:
             return redirect(url_for('index'))
         try:
             make_proof = request.form['make_proof']
@@ -51,6 +54,9 @@ def mining():
         return render_template('index.html', querry=max_index)
     return render_template('index.html')
 
+
+api.add_resource(resources.AddBlock, '/api/addblock')
+api.add_resource(resources.FetchBlock, '/api/fetch')
 
 if __name__ == '__main__':
     app.run(debug=True)

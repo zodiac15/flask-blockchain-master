@@ -117,10 +117,23 @@ def write_block(in_block, make_proof=False):
     block['index'] = cur_index
     block['hash'] = hashlib.sha256(json.dumps(block).encode()).hexdigest()
 
-    with open(BLOCKCHAIN_DIR + cur_index + '.json', 'w') as file:
-        json.dump(block, file, indent=4, ensure_ascii=False)
     if make_proof is True:
         get_POW(str(cur_index))
+
+    with open(BLOCKCHAIN_DIR + cur_index + '.json', 'w') as file:
+        json.dump(block, file, indent=4, ensure_ascii=False)
+        return {'index': int(cur_index)}
+
+
+
+def read_block(index):
+    cur_index = str(index)
+
+    try:
+        file_dict = json.load(open(BLOCKCHAIN_DIR + cur_index + '.json'))
+        return file_dict
+    except Exception as e:
+        return {'error':e}
 
 
 if __name__ == '__main__':
