@@ -4,9 +4,18 @@ from flask import request
 import blockChain
 import resources
 from flask_restful import Api
+from flask_apscheduler import APScheduler
+
 
 app = Flask(__name__)
 api = Api(app)
+scheduler = APScheduler()
+
+scheduler.api_enabled = True
+scheduler.init_app(app)
+
+
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -55,8 +64,30 @@ def mining():
     return render_template('index.html')
 
 
+@scheduler.task('interval', id='do_job_1', seconds=60, misfire_grace_time=900)
+def scheduled_integrity_check():
+    with scheduler.app.app_context():
+        results = blockChain.check_blocks_integrity()
+        with open("integrity_errors.txt", 'a') as f:
+            for block in results:
+                if block['result'] == 'error':
+                    f.write("Block " + block["block"] + " corrupted.\n")
+                    app.logger.info("Block " + block["block"] + " corrupted.")
+
+
+@scheduler.task('interval', id='do_job_1', seconds=600, misfire_grace_time=60)
+def scheduled_block_miner():
+    with scheduler.app.app_context():
+        max_index = int(blockChain.get_next_block())
+
+        for i in range(2, max_index):
+            blockChain.get_POW(i)
+            app.logger.info('Mined block# %d', i)
+
+
 api.add_resource(resources.AddBlock, '/api/addblock')
 api.add_resource(resources.FetchBlock, '/api/fetch')
 
 if __name__ == '__main__':
+    scheduler.start()
     app.run(debug=True)

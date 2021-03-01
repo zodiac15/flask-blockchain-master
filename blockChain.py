@@ -86,7 +86,7 @@ def is_valid_proof(last_proof, proof, difficulty):
     return guess_hash[:difficulty] == '0' * difficulty
 
 
-def get_POW(file_name, difficulty=1):
+def get_POW(file_name, difficulty=5):
     # POW - proof of work
     file_name = str(file_name)
     if file_name.endswith('.json'):

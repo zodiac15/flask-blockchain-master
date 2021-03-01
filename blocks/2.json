@@ -10,15 +10,11 @@
     },
     "creator": "zodiac15",
     "block_type": "create",
-    "prev_hash": [
-        "83d7411b8069a6f1ffa6aeee6379f967a2d666eb65cc5cf4eeef318b058c5b55"
-    ],
+    "prev_hash": "83d7411b8069a6f1ffa6aeee6379f967a2d666eb65cc5cf4eeef318b058c5b55",
     "timestamp": [
         "2020-11-29 18:44:27.937172"
     ],
-    "proof": [
-        "-1"
-    ],
+    "proof": 135996,
     "index": "2",
     "hash": "caaa72e0f8ed1fb1807361328973841e679e65c6337f2da25e2e20e057c68139"
 }
