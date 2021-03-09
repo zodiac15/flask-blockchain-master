@@ -11,9 +11,9 @@ Blockchain with Flask
 ```
 pip install Flask
 
-git clone https://github.com/colyk/flask-blockchain.git
+git clone https://github.com/zodiac15/flask-blockchain-master.git
 
-cd flask-blockchain
+cd flask-blockchain-master
 
 python server.py
 ```
@@ -23,3 +23,7 @@ Now head over to http://127.0.0.1:5000/, and you should see main page of blockch
 ## POW
 
 **POW** _( proof of work)_ is a piece of data which is difficult (costly, time-consuming) to produce but easy for others to verify and which satisfies certain requirements. Producing a proof of work can be a random process with low probability so that a lot of trial and error is required on average before a valid proof of work is generated. Bitcoin uses the Hashcash proof of work system.
+
+## Credits
+
+The base code and documentation for this project was taken from https://github.com/colyk/flask-blockchain . I would like to thank the [developer](https://github.com/colyk) for the same.
